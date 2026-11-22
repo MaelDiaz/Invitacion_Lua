@@ -1,0 +1,26 @@
+EL GRAN CIRCO DE LUA — INVITACIÓN WEB
+
+1. Abre index.html en un navegador para probar la invitación.
+2. Antes de publicar, abre index.html con un editor de texto.
+3. Busca: const WHATSAPP_NUMBER = "5210000000000";
+4. Sustituye el número de ejemplo por el número real, con código de país y sin +, espacios ni guiones.
+   Ejemplo de formato mexicano: 5215512345678
+5. Las fotos están en un carrusel deslizable. Para cambiarlas, edita los bloques <div class="photo">...</div>
+   (dentro de <div class="carousel-track">). Para agregar una foto, copia un bloque completo y cambia el
+   nombre del archivo y la leyenda; los puntitos se ajustan solos. Guarda las imágenes en la carpeta "imagenes".
+   El ancho de cada foto se cambia en el CSS con --slide-w, y su proporción con aspect-ratio en ".photo img".
+6. La cuenta regresiva ya está configurada para el 20 de diciembre de 2026 a las 14:00,
+   usando la hora local del dispositivo.
+7. El botón de ubicación abre el enlace de Google Maps proporcionado.
+
+PUBLICACIÓN
+Puedes subir index.html a Netlify Drop (https://app.netlify.com/drop) desde una computadora.
+Para una versión con fotografías optimizadas y el número de WhatsApp configurado, conviene
+hacer esos cambios antes de publicar.
+
+NOTAS
+- MÚSICA: la invitación reproduce musica/cancion.mp3 si existe (ver musica/LEEME.txt). Si no existe,
+  suena una melodía de caja de música original generada por el navegador. Empieza cuando el visitante
+  toca "Entrar al circo" o el botón de música (los navegadores no permiten reproducir sonido antes).
+- La galería es un carrusel: se desliza con el dedo, con las flechas, con los puntitos o con el teclado (← →).
+- La dirección de Google Maps es el enlace que proporcionaste.

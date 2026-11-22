@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!-- Codificación de caracteres: permite acentos, ñ y emojis -->
+  <meta charset="utf-8">
+
+  <!-- Adapta la página al ancho de la pantalla (necesario para que se vea bien en celulares) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Color de la barra del navegador en celulares -->
+  <meta name="theme-color" content="#fff1d9">
+
+  <!-- Título que aparece en la pestaña del navegador -->
+  <title>El gran circo de Lua</title>
+
+  <!-- Fuentes de Google: Fredoka (textos) y Lilita One (títulos).
+       "preconnect" adelanta la conexión para que carguen más rápido. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Lilita+One&display=swap" rel="stylesheet">
+
+
+  <!-- ============================================================
+       ESTILOS (CSS)
+       Orden: variables → base → componentes de cada sección →
+       ajustes para pantallas (media queries) → animaciones.
+       ============================================================ -->
+  <style>
+
+    /* ==========================================================
+       1. VARIABLES DE DISEÑO
+       Colores y sombra que se reutilizan en toda la página con var(--nombre).
+       Para cambiar un color en todo el sitio, edítalo solo aquí.
+       ========================================================== */
+    :root {
+      --red: #d9434d;          /* rojo principal (botones, títulos, carpa) */
+      --red-dark: #a92535;     /* rojo oscuro (sombras de botones y contornos) */
+      --yellow: #ffd45c;       /* amarillo */
+      --blue: #62b5d7;         /* azul */
+      --green: #7ab889;        /* verde */
+      --cream: #fff1d9;        /* crema (fondo general de la página) */
+      --paper: #fffaf0;        /* papel (fondo de la columna central) */
+      --ink: #573b39;          /* color del texto */
+      --pink: #f29ab0;         /* rosa */
+      --shadow: 0 12px 30px rgba(113, 61, 43, .13);   /* sombra suave de las tarjetas */
+    }
+
+
+    /* ==========================================================
+       2. ESTILOS BASE
+       Reglas generales que afectan a toda la página.
+       ========================================================== */
+
+    /* Hace que el ancho de cada elemento incluya su padding y borde (más fácil de calcular) */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Desplazamiento suave al tocar un enlace interno (por ejemplo "Entrar al circo") */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Cuerpo de la página: fondo, color y tipografía general */
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Fredoka", sans-serif;
+      overflow-x: hidden;        /* evita que aparezca scroll horizontal */
+    }
+
+    /* Los enlaces heredan el color del texto que los rodea */
+    a {
+      color: inherit;
+    }
+
+    /* Los botones usan la misma tipografía de la página y muestran la manita al pasar el cursor */
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    /* Columna central: limita el ancho a 760px y la centra en pantallas grandes */
+    .page {
+      max-width: 760px;
+      margin: auto;
+      background: var(--paper);
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(96, 54, 32, .08);
+    }
+
+    /* Cada sección de la invitación: espacio interior y texto centrado */
+    section {
+      position: relative;        /* permite colocar elementos decorativos dentro de la sección */
+      padding: 64px 22px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+
+    /* ==========================================================
+       3. TIPOGRAFÍA
+       Textos pequeños, títulos y párrafos.
+       ========================================================== */
+
+    /* Texto pequeño en mayúsculas que va encima de los títulos */
+    .kicker {
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .18em;     /* separación entre letras */
+      text-transform: uppercase;
+      color: var(--red);
+    }
+
+    /* Quita el margen superior de títulos y párrafos para controlar mejor el espaciado */
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    /* Los títulos usan la fuente decorativa Lilita One.
+       (.display es una clase opcional con el mismo estilo; hoy no se usa en el HTML) */
+    h1, h2, .display {
+      font-family: "Lilita One", cursive;
+      font-weight: 400;
+    }
+
+    /* Títulos de sección: tamaño adaptable (clamp = mínimo, ideal, máximo) */
+    h2 {
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      line-height: 1.02;
+      color: var(--red);
+      margin: 8px 0 14px;
+    }
+
+    /* Párrafos: más espacio entre renglones para leer mejor */
+    p {
+      line-height: 1.55;
+    }
+
+    /* Texto pequeño y discreto para notas aclaratorias */
+    .small {
+      font-size: .9rem;
+      color: #806a5c;
+    }
+
+
+    /* ==========================================================
+       4. BOTONES
+       ========================================================== */
+
+    /* Botón principal en forma de píldora; la "sombra" sólida de abajo le da efecto 3D */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;                  /* espacio entre el emoji y el texto */
+      background: var(--red);
+      color: white;
+      text-decoration: none;
+      border: 0;
+      border-radius: 999px;      /* esquinas totalmente redondeadas */
+      padding: 14px 23px;
+      font-weight: 700;
+      box-shadow: 0 5px 0 var(--red-dark);
+      transition: .18s;          /* animación suave al pasar el cursor */
+    }
+
+    /* Al pasar el cursor, el botón se eleva un poco y se ilumina */
+    .btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    /* Variante amarilla del botón (disponible, hoy no se usa) */
+    .btn.yellow {
+      background: var(--yellow);
+      color: #644329;
+      box-shadow: 0 5px 0 #d5a63b;
+    }
+
+    /* Variante azul del botón (disponible, hoy no se usa) */
+    .btn.blue {
+      background: var(--blue);
+      box-shadow: 0 5px 0 #3888ad;
+    }
+
+
+    /* ==========================================================
+       5. PORTADA (HERO)
+       Primera pantalla: título, carpa de circo y botón de entrada.
+       ========================================================== */
+
+    /* Fondo de la portada: dos puntitos blancos decorativos sobre un degradado cálido */
+    .hero {
+      min-height: 760px;
+      padding: 26px 18px 72px;
+      background:
+        radial-gradient(circle at 10% 18%, #fff 0 3px, transparent 4px),   /* puntito blanco izquierdo */
+        radial-gradient(circle at 90% 24%, #fff 0 4px, transparent 5px),   /* puntito blanco derecho */
+        linear-gradient(180deg, #ffe8bd 0%, #fff3dd 68%, #f9dcae 100%);    /* degradado de fondo */
+    }
+
+    /* Franja superior con "UNA INVITACIÓN ESPECIAL" a la izquierda y la fecha a la derecha */
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 620px;
+      margin: 0 auto 22px;
+      color: var(--red-dark);
+      font-weight: 700;
+      font-size: .8rem;
+      letter-spacing: .12em;
+    }
+
+    /* Fila de banderines colgantes */
+    .flag-row {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 580px;
+      margin: 0 auto 16px;
+    }
+
+    /* Cada banderín es un triángulo hecho solo con bordes (sin imagen) */
+    .flag {
+      width: 0;
+      height: 0;
+      border-left: 17px solid transparent;
+      border-right: 17px solid transparent;
+      border-top: 35px solid var(--red);                     /* este borde es el color del triángulo */
+      filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .04));
+    }
+
+    /* Colores alternados de los banderines según su posición */
+    .flag:nth-child(3n) {                                    /* cada 3.º banderín: amarillo */
+      border-top-color: var(--yellow);
+    }
+
+    .flag:nth-child(3n+2) {                                  /* posiciones 2, 5, 8…: azul */
+      border-top-color: var(--blue);
+    }
+
+    .flag:nth-child(4n) {                                    /* cada 4.º banderín: verde */
+      border-top-color: var(--green);
+    }
+
+    /* Título gigante "¡Lua!" con sombra para dar efecto de letrero */
+    .hero h1 {
+      font-size: clamp(3.8rem, 15vw, 7.4rem);
+      line-height: .9;
+      color: var(--red);
+      text-shadow: 0 4px 0 #ffcf65, 0 8px 0 rgba(169, 37, 53, .12);
+      margin: 8px 0;
+    }
+
+    /* Frase "te invita a celebrar su primer añito" */
+    .hero .subtitle {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #7c5543;
+      margin: 14px 0 22px;
+    }
+
+    /* Letrero "¡EL GRAN CIRCO ESTÁ AQUÍ!": marco amarillo con contorno rojo, ligeramente inclinado */
+    .marquee {
+      display: inline-block;
+      background: #fff9eb;
+      border: 5px solid var(--yellow);
+      outline: 3px solid var(--red);
+      border-radius: 18px;
+      padding: 13px 23px;
+      box-shadow: var(--shadow);
+      margin: 8px auto 18px;
+      transform: rotate(-1deg);  /* inclinación de 1 grado */
+    }
+
+    /* Texto dentro del letrero */
+    .marquee strong {
+      font-family: "Lilita One";
+      font-size: 1.5rem;
+      color: var(--red-dark);
+      letter-spacing: .05em;
+    }
+
+    /* Ilustración de la carpa (SVG): nunca más ancha que 560px, centrada, con sombra suave */
+    .circus-art {
+      width: min(100%, 560px);
+      height: auto;
+      display: block;
+      margin: 0 auto 15px;
+      filter: drop-shadow(0 12px 8px rgba(116, 65, 43, .12));
+    }
+
+    /* Texto "Desliza hacia abajo y descubre la sorpresa" */
+    .hero .hint {
+      font-size: .85rem;
+      color: #866b56;
+      margin-top: 22px;
+    }
+
+    /* Estrellitas decorativas que flotan en la portada (se animan con "float", ver más abajo) */
+    .sparkle {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: float 3.5s ease-in-out infinite;
+    }
+
+    /* Posición de cada estrellita (s1 a s4) y retraso para que no se muevan al mismo tiempo */
+    .s1 { left: 8%;  top: 25%; }
+    .s2 { right: 8%; top: 38%;    animation-delay: 1s; }
+    .s3 { left: 13%; bottom: 16%; animation-delay: 1.5s; }
+    .s4 { right: 12%; bottom: 18%; animation-delay: .6s; }
+
+    /* Animación "float": a mitad del ciclo la estrellita sube 12px y gira 12 grados */
+    @keyframes float {
+      50% {
+        transform: translateY(-12px) rotate(12deg);
+      }
+    }
+
+
+    /* ==========================================================
+       6. CINTA DECORATIVA
+       Franja de rayas diagonales que separa algunas secciones.
+       ========================================================== */
+    .ribbon {
+      height: 24px;
+      background: repeating-linear-gradient(
+        135deg,
+        var(--red) 0 18px,
+        var(--paper) 18px 36px,
+        var(--yellow) 36px 54px,
+        var(--paper) 54px 72px
+      );
+    }
+
+
+    /* ==========================================================
+       7. SECCIÓN "LA MAGIA CUMPLE UN AÑO" (introducción)
+       ========================================================== */
+
+    /* Fondo y espacio superior de la sección */
+    .intro {
+      background: var(--paper);
+      padding-top: 66px;
+    }
+
+    /* Tarjeta blanca con borde punteado donde aparece el "1" */
+    .intro-card {
+      max-width: 560px;
+      margin: 24px auto 0;
+      background: #fff;
+      border: 2px dashed #e8b96a;
+      border-radius: 24px;
+      padding: 26px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Número "1" gigante, amarillo con sombra roja */
+    .big-one {
+      font-family: "Lilita One";
+      font-size: 5rem;
+      color: var(--yellow);
+      line-height: 1;
+      text-shadow: 3px 3px 0 var(--red);
+    }
+
+    /* Cuadrícula de 2 columnas con la fecha y la hora */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;    /* dos columnas del mismo ancho */
+      gap: 12px;
+      margin: 22px auto 0;
+      max-width: 500px;
+    }
+
+    /* Cada cuadrito de información (fecha / hora) */
+    .info {
+      background: #fff7e8;
+      border-radius: 18px;
+      padding: 18px 10px;
+      border: 1px solid #f4dfbd;
+    }
+
+    /* Emoji grande de cada cuadrito */
+    .info .emoji {
+      font-size: 1.8rem;
+    }
+
+    /* Texto en negritas ("Domingo", "La función inicia") en rojo y en su propio renglón */
+    .info b {
+      display: block;
+      color: var(--red);
+      margin: 5px 0;
+    }
+
+
+    /* ==========================================================
+       8. SECCIÓN "¡QUE COMIENCE EL ESPECTÁCULO!" (programa)
+       ========================================================== */
+
+    /* Fondo azul claro de la sección */
+    .program {
+      background: #eaf6f7;
+    }
+
+    /* Título en azul para esta sección */
+    .program h2 {
+      color: #3988a8;
+    }
+
+    /* Hilera de estrellas decorativas "★ ✦ ★" */
+    .stars {
+      font-size: 1.4rem;
+      letter-spacing: .3em;
+      color: #eebc38;
+    }
+
+    /* Lista vertical de actividades, con el texto alineado a la izquierda */
+    .program-list {
+      max-width: 470px;
+      margin: 25px auto 0;
+      display: grid;
+      gap: 12px;
+      text-align: left;
+    }
+
+    /* Cada actividad: tarjeta blanca con el emoji a la izquierda y el texto a la derecha */
+    .program-item {
+      background: white;
+      border-radius: 16px;
+      padding: 14px 17px;
+      box-shadow: 0 5px 15px rgba(50, 100, 110, .08);
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    /* Emoji de cada actividad */
+    .program-item span {
+      font-size: 1.7rem;
+    }
+
+
+    /* ==========================================================
+       9. SECCIÓN "FALTA MUY POCO" (cuenta regresiva)
+       ========================================================== */
+
+    /* Fondo durazno claro de la sección */
+    .countdown {
+      background: #fff0d6;
+    }
+
+    /* Contenedor de los 4 cuadritos; se acomodan en varias filas si no caben (flex-wrap) */
+    .countdown-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 25px auto;
+    }
+
+    /* Cada cuadrito rojo (Días, Horas, Minutos, Segundos) */
+    .time {
+      min-width: 72px;
+      background: var(--red);
+      color: #fff;
+      border-radius: 15px;
+      padding: 14px 10px;
+      box-shadow: 0 5px 0 var(--red-dark);
+    }
+
+    /* Número grande dentro del cuadrito */
+    .time strong {
+      display: block;
+      font-family: "Lilita One";
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    /* Etiqueta pequeña debajo del número ("Días", "Horas"…) */
+    .time small {
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+
+    /* ==========================================================
+       10. SECCIÓN "¡TE ESPERAMOS!" (ubicación)
+       ========================================================== */
+
+    /* Fondo verde claro de la sección */
+    .location {
+      background: #f1f7e9;
+    }
+
+    /* Título en verde para esta sección */
+    .location h2 {
+      color: #558e62;
+    }
+
+    /* Tarjeta blanca que contiene el mapa ilustrado y el botón */
+    .map-card {
+      max-width: 520px;
+      margin: 22px auto 0;
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    /* "Mapa" dibujado solo con CSS: dos calles blancas cruzadas sobre un fondo verde a cuadros */
+    .map-illustration {
+      height: 145px;
+      border-radius: 16px;
+      background:
+        linear-gradient(35deg, transparent 45%, #fff 46% 52%, transparent 53%),    /* calle diagonal 1 */
+        linear-gradient(145deg, transparent 43%, #fff 44% 50%, transparent 51%),   /* calle diagonal 2 */
+        repeating-linear-gradient(0deg, #d8e9c9 0 27px, #c8dfb7 27px 54px);        /* franjas verdes del terreno */
+      display: grid;
+      place-items: center;       /* centra los emojis 📍🎪🎈 */
+      font-size: 3rem;
+    }
+
+
+    /* ==========================================================
+       11. SECCIÓN "MOMENTOS DE LUA" (galería en carrusel deslizable)
+       Hecho con CSS (scroll-snap) + JavaScript para flechas, puntitos y foto activa (ver JS, parte 4).
+       ========================================================== */
+
+    /* Fondo crema claro de la sección */
+    .gallery {
+      background: #fff8ec;
+    }
+
+    /* Contenedor del carrusel.
+       --slide-w = ancho de cada foto: 70% del ancho de la pantalla, con máximo de 320px.
+       Lo que sobra a los lados deja ver un pedacito de la foto anterior y de la siguiente,
+       así se nota que se puede deslizar. */
+    .carousel {
+      --slide-w: min(70vw, 320px);
+      max-width: 520px;
+      margin: 25px auto 0;
+    }
+
+    /* Pista: fila horizontal de fotos que se desliza con el dedo, el trackpad o el teclado */
+    .carousel-track {
+      position: relative;                                      /* el JavaScript lo usa para calcular la posición de cada foto */
+      display: flex;
+      gap: 14px;                                               /* espacio entre fotos */
+      padding: 12px calc((100% - var(--slide-w)) / 2) 18px;    /* arriba | izquierda y derecha | abajo.
+                                                                  Los lados centran la 1.ª y la última foto;
+                                                                  arriba y abajo evitan que se recorte la sombra */
+      overflow-x: auto;                                        /* permite deslizar de lado */
+      scroll-snap-type: x mandatory;                           /* al soltar, la pista se "imanta" a una foto */
+      overscroll-behavior-x: contain;                          /* evita que el gesto cambie de página al llegar al borde */
+      -webkit-overflow-scrolling: touch;                       /* inercia suave en iPhone antiguos */
+      scrollbar-width: none;                                   /* oculta la barra de desplazamiento (Firefox) */
+    }
+
+    /* Oculta la barra de desplazamiento en Chrome, Edge y Safari */
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Contorno visible solo cuando se navega con teclado (accesibilidad) */
+    .carousel-track:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      border-radius: 10px;
+    }
+
+    /* Cada foto: marco blanco tipo polaroid */
+    .photo {
+      flex: 0 0 var(--slide-w);          /* no se encoge ni se estira: siempre mide --slide-w */
+      scroll-snap-align: center;         /* al deslizar, se detiene con la foto centrada */
+      scroll-snap-stop: always;          /* una deslizada rápida no se salta fotos */
+      background: white;
+      padding: 9px 9px 28px;             /* más espacio abajo para la leyenda */
+      box-shadow: 0 5px 16px rgba(80, 50, 30, .13);
+      border-radius: 4px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    /* Cuando el JavaScript está activo ("is-ready"), las fotos que no están al centro
+       se ven un poco más pequeñas y tenues para destacar la foto actual */
+    .carousel.is-ready .photo:not(.is-active) {
+      transform: scale(.92);
+      opacity: .6;
+    }
+
+    /* Recuadro provisional de color para fotos (ya no se usa: se reemplazó por <img>) */
+    .photo .placeholder {
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(135deg, #f9d6d6, #ffe6a8 55%, #cce8e9);
+      display: grid;
+      place-items: center;
+      font-size: 2.8rem;
+    }
+
+    /* Leyenda debajo de cada foto ("Un recuerdo especial"…) */
+    .photo small {
+      display: block;
+      margin-top: 8px;
+      color: #9b7c66;
+    }
+
+    /* Fila de controles debajo de las fotos: flecha izquierda, puntitos y flecha derecha */
+    .carousel-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    /* Botones de flecha: círculos rojos con efecto 3D, igual que los demás botones */
+    .carousel-btn {
+      width: 44px;                       /* 44px = tamaño cómodo para tocar con el dedo */
+      height: 44px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;               /* centra el icono */
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 4px 0 var(--red-dark);
+      transition: .18s;
+    }
+
+    .carousel-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.04);
+    }
+
+    /* Icono de la flecha (SVG) */
+    .carousel-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Contenedor de los puntitos (el JavaScript crea uno por cada foto) */
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Puntito: círculo pequeño; el de la foto actual se alarga y se pone rojo */
+    .carousel-dot {
+      position: relative;
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: #e8c8b8;
+      transition: width .25s, background .25s;
+    }
+
+    .carousel-dot.is-active {
+      width: 26px;
+      background: var(--red);
+    }
+
+    /* Área invisible alrededor del puntito para que sea fácil tocarlo con el dedo */
+    .carousel-dot::after {
+      content: "";
+      position: absolute;
+      inset: -10px;
+    }
+
+
+    /* ==========================================================
+       12. SECCIÓN "¿NOS ACOMPAÑAS?" (confirmación de asistencia)
+       ========================================================== */
+
+    /* Fondo rosa claro de la sección */
+    .rsvp {
+      background: #fbe6e8;
+    }
+
+    /* Tarjeta blanca del formulario, con el texto alineado a la izquierda */
+    .rsvp-card {
+      max-width: 520px;
+      margin: 22px auto 0;
+      background: #fff;
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      text-align: left;
+    }
+
+    /* Etiquetas de los campos ("Nombre de quien confirma"…) */
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 13px 0 6px;
+    }
+
+    /* Campo de texto y lista desplegable: ocupan todo el ancho de la tarjeta */
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1.5px solid #e8c8b8;
+      border-radius: 12px;
+      font: inherit;
+      background: #fffdf9;
+      color: var(--ink);
+    }
+
+    /* El botón de confirmar ocupa todo el ancho y se separa de los campos */
+    .rsvp-card .btn {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+
+    /* ==========================================================
+       13. PIE DE PÁGINA
+       ========================================================== */
+
+    /* Franja roja final con texto blanco */
+    .footer {
+      background: var(--red);
+      color: #fff;
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    /* Título "¡Te esperamos!" del pie, en blanco */
+    .footer h2 {
+      color: #fff;
+      font-size: 2.5rem;
+    }
+
+
+    /* ==========================================================
+       14. BOTÓN FLOTANTE DE MÚSICA
+       ========================================================== */
+
+    /* Botón amarillo fijo en la esquina inferior derecha; z-index lo mantiene encima de todo */
+    .music {
+      position: fixed;
+      right: 15px;
+      bottom: 15px;
+      z-index: 10;
+      border: 0;
+      border-radius: 999px;
+      background: var(--yellow);
+      color: #68452d;
+      padding: 12px 16px;
+      font-weight: 700;
+      box-shadow: 0 5px 18px #573b3930;
+    }
+
+    /* Mientras la música suena, el botón cambia a verde (la clase "playing" la agrega el JavaScript) */
+    .music.playing {
+      background: var(--green);
+      color: white;
+    }
+
+
+    /* ==========================================================
+       15. AJUSTES SEGÚN EL TAMAÑO DE PANTALLA (media queries)
+       Se colocan después de las reglas base para poder sobrescribirlas.
+       ========================================================== */
+
+    /* Pantallas medianas y grandes (650px o más): más espacio lateral y portada más alta */
+    @media (min-width: 650px) {
+      section {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+
+      .hero {
+        min-height: 820px;
+        padding-top: 32px;
+      }
+
+      .info-grid {
+        gap: 18px;
+      }
+    }
+
+    /* Celulares muy angostos (380px o menos): se compactan tamaños y espacios */
+    @media (max-width: 380px) {
+      .hero {
+        min-height: 680px;
+      }
+
+      .info-grid {
+        gap: 8px;
+      }
+
+      .info {
+        padding: 14px 6px;
+      }
+
+      .time {
+        min-width: 65px;
+      }
+
+      .topline {
+        font-size: .68rem;
+      }
+    }
+
+
+    /* ==========================================================
+       16. AJUSTES AGREGADOS DESPUÉS
+       Se dejan en su lugar original para no alterar el orden del CSS.
+       ========================================================== */
+
+    /* (Galería) Las fotos llenan el marco sin deformarse */
+    .photo img {
+      width: 100%;
+      aspect-ratio: 4 / 5;       /* marco vertical (ancho 4 : alto 5). Para cuadrado usa 1 / 1 */
+      object-fit: cover;         /* recorta la imagen para llenar el marco sin estirarla */
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* (Portada) FECHA Y HORA DE LA INVITACIÓN */
+    .hero-date {
+      font-size: 25px;
+      font-weight: 600;
+      color: #704C3C;
+      text-align: center;
+      margin-top: 18px;
+      line-height: 1.4;
+    }
+
+
+    /* ==========================================================
+       17. CARPA DE CIRCO: ANIMACIONES SUTILES
+       Afectan solo a las piezas marcadas con estas clases dentro del SVG.
+       ========================================================== */
+
+    /* Banderín: ondea; el giro se hace desde su lado izquierdo (donde se une al asta) */
+    .circus-art .pennant {
+      transform-box: fill-box;
+      transform-origin: 0 50%;
+      animation: wave 2.6s ease-in-out infinite;
+    }
+
+    /* Ramos de globos: se mecen como péndulo, pivotando desde el punto del suelo donde se amarran */
+    .circus-art .cluster {
+      transform-box: view-box;
+      animation: sway 5.5s ease-in-out infinite;
+    }
+
+    .circus-art .cluster.left {
+      transform-origin: 92px 362px;     /* punto de amarre del ramo izquierdo */
+    }
+
+    .circus-art .cluster.right {
+      transform-origin: 535px 362px;    /* punto de amarre del ramo derecho */
+      animation-duration: 6.5s;         /* velocidad distinta para que no se muevan igual */
+      animation-delay: -2s;             /* arranca "adelantado" para desincronizarlo del izquierdo */
+    }
+
+    /* Estrellitas de la carpa: parpadean (el retraso de cada una está en su atributo style) */
+    .circus-art .tw {
+      animation: twinkle 3.4s ease-in-out infinite;
+    }
+
+    /* "wave": el banderín se inclina y se encoge ligeramente de lado a lado */
+    @keyframes wave {
+      0%, 100% { transform: skewY(-5deg) scaleX(1); }
+      50%      { transform: skewY(5deg) scaleX(.9); }
+    }
+
+    /* "sway": el ramo gira 1.5° hacia un lado y hacia el otro */
+    @keyframes sway {
+      0%, 100% { transform: rotate(-1.5deg); }
+      50%      { transform: rotate(1.5deg); }
+    }
+
+    /* "twinkle": la estrella baja su opacidad a la mitad del ciclo */
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: .3; }
+    }
+
+    /* Accesibilidad: si la persona tiene activada la opción "reducir movimiento", se apagan las animaciones */
+    @media (prefers-reduced-motion: reduce) {
+      .circus-art *,
+      .sparkle {
+        animation: none !important;
+      }
+
+      .photo,
+      .carousel-dot {
+        transition: none !important;     /* el carrusel cambia de foto sin efectos de movimiento */
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <!-- Columna central de la invitación -->
+  <main class="page">
+
+
+    <!-- ==========================================================
+         1. PORTADA
+         Título, fecha, carpa de circo y botón "Entrar al circo".
+         ========================================================== -->
+    <section class="hero" id="inicio">
+
+      <!-- Franja superior: leyenda a la izquierda y fecha corta a la derecha -->
+      <div class="topline">
+        <span>✦ UNA INVITACIÓN ESPECIAL ✦</span>
+        <span>20 · 12 · 2026</span>
+      </div>
+
+      <!-- Fila de banderines (11 triángulos; sus colores se definen en el CSS).
+           aria-hidden="true" = los lectores de pantalla la ignoran porque es solo decoración -->
+      <div class="flag-row" aria-hidden="true">
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+        <i class="flag"></i>
+      </div>
+
+      <!-- Frase de apertura -->
+      <div class="kicker">Damas y caballeros, niños y niñas…</div>
+
+      <!-- Título principal -->
+      <h1>¡Lua!</h1>
+
+      <!-- Subtítulo -->
+      <p class="subtitle">te invita a celebrar su primer añito</p>
+
+      <!-- Letrero llamativo -->
+      <div class="marquee"><strong>¡EL GRAN CIRCO ESTÁ AQUÍ!</strong></div>
+
+      <!-- FECHA DEL CUMPLEAÑOS -->
+      <p class="hero-date">20 DICIEMBRE 2026 5:00 PM</p>
+
+      <!-- Ilustración de la carpa de circo (SVG): ver los comentarios dentro del dibujo -->
+      <svg class="circus-art" viewBox="0 0 620 420" role="img" aria-label="Carpa de circo con globos, una lunita y estrellas">
+
+        <!-- ===== DEFINICIONES: piezas que no se dibujan solas, se reutilizan más abajo ===== -->
+        <defs>
+          <!-- Recorte con la silueta del techo: los gajos quedan dentro de esta forma -->
+          <clipPath id="roofClip">
+            <path d="M120 258 Q240 205 310 70 Q380 205 500 258Z"/>
+          </clipPath>
+
+          <!-- Recorte con la forma de arco de la puerta: las cortinas se cortan con ella -->
+          <clipPath id="doorClip">
+            <path d="M270 365 V322 A40 40 0 0 1 350 322 V365Z"/>
+          </clipPath>
+
+          <!-- Degradado de la luz que sale de la puerta (amarillo abajo → rojo oscuro arriba) -->
+          <radialGradient id="doorGlow" cx="50%" cy="100%" r="100%">
+            <stop offset="0" stop-color="#fff0b8"/>
+            <stop offset=".3" stop-color="#ffd45c"/>
+            <stop offset=".62" stop-color="#e9674f"/>
+            <stop offset="1" stop-color="#8f2434"/>
+          </radialGradient>
+
+          <!-- Degradado de sombra del techo: más claro a la izquierda y más oscuro a la derecha (da volumen) -->
+          <linearGradient id="roofShade" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#fff" stop-opacity=".22"/>
+            <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+            <stop offset="1" stop-color="#6e1423" stop-opacity=".24"/>
+          </linearGradient>
+
+          <!-- Estrella de 4 puntas: se reutiliza con <use> en varios lugares -->
+          <path id="spark" d="M0 -10 Q1.6 -1.6 10 0 Q1.6 1.6 0 10 Q-1.6 1.6 -10 0 Q-1.6 -1.6 0 -10Z"/>
+
+          <!-- Cortina izquierda de la puerta (la derecha es esta misma, volteada) -->
+          <g id="curtainL">
+            <path d="M268 278 L291 278 Q286 304 282 334 Q287 350 293 366 L268 366Z" fill="#d9434d" stroke="#a92535" stroke-width="3" stroke-linejoin="round"/>  <!-- tela -->
+            <path d="M278 290 Q275 330 279 362" fill="none" stroke="#a92535" stroke-opacity=".35" stroke-width="2"/>  <!-- pliegue -->
+            <rect x="268" y="330" width="17" height="8" rx="4" fill="#ffd45c" stroke="#a92535" stroke-width="2.5"/>  <!-- amarre dorado -->
+          </g>
+        </defs>
+
+        <!-- ===== SUELO: dos óvalos verdes suaves ===== -->
+        <ellipse cx="310" cy="378" rx="285" ry="30" fill="#cfe5c4"/>
+        <ellipse cx="310" cy="372" rx="240" ry="16" fill="#bddbb0" opacity=".7"/>
+
+        <!-- ===== PAREDES DE LA CARPA: franjas verticales rojas y crema ===== -->
+        <g stroke="#a92535" stroke-width="3.5" stroke-linejoin="round">
+          <g>
+            <rect x="134" y="262" width="352" height="103" fill="#fff6e5"/>  <!-- fondo crema -->
+            <rect x="134" y="262" width="44" height="103" fill="#d9434d"/>  <!-- franja roja -->
+            <rect x="222" y="262" width="44" height="103" fill="#d9434d"/>  <!-- franja roja -->
+            <rect x="310" y="262" width="44" height="103" fill="#d9434d"/>  <!-- franja roja -->
+            <rect x="398" y="262" width="44" height="103" fill="#d9434d"/>  <!-- franja roja -->
+          </g>
+          <rect x="134" y="262" width="352" height="103" fill="none"/>  <!-- contorno de las paredes -->
+        </g>
+        <path d="M128 365 H492" stroke="#a92535" stroke-width="8" stroke-linecap="round"/>  <!-- zócalo (base) -->
+
+        <!-- ===== ENTRADA ===== -->
+        <!-- Interior de la puerta, con el degradado de luz -->
+        <path d="M270 365 V322 A40 40 0 0 1 350 322 V365Z" fill="url(#doorGlow)"/>
+        <!-- Cortinas recogidas a ambos lados (recortadas con la forma del arco) -->
+        <g clip-path="url(#doorClip)">
+          <use href="#curtainL"/>
+          <use href="#curtainL" transform="translate(620 0) scale(-1 1)"/>  <!-- versión volteada = cortina derecha -->
+        </g>
+        <!-- Marco del arco -->
+        <path d="M270 365 V322 A40 40 0 0 1 350 322 V365" fill="none" stroke="#a92535" stroke-width="5" stroke-linejoin="round"/>
+        <!-- Alfombra roja con bordes dorados -->
+        <path d="M278 366 L344 366 L364 398 L256 398Z" fill="#d9434d" stroke="#a92535" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M290 366 L278 398 M330 366 L342 398" stroke="#ffd45c" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- ===== TECHO: 10 gajos que salen de la punta, recortados con la silueta del techo ===== -->
+        <g clip-path="url(#roofClip)">
+          <rect x="110" y="60" width="400" height="210" fill="#fff6e5"/>  <!-- fondo crema -->
+          <path d="M310 70 L120 258 L158 258Z" fill="#d9434d"/>  <!-- gajo 1 (rojo) -->
+          <path d="M310 70 L158 258 L196 258Z" fill="#fff6e5"/>  <!-- gajo 2 (crema) -->
+          <path d="M310 70 L196 258 L234 258Z" fill="#d9434d"/>  <!-- gajo 3 (rojo) -->
+          <path d="M310 70 L234 258 L272 258Z" fill="#fff6e5"/>  <!-- gajo 4 (crema) -->
+          <path d="M310 70 L272 258 L310 258Z" fill="#d9434d"/>  <!-- gajo 5 (rojo) -->
+          <path d="M310 70 L310 258 L348 258Z" fill="#fff6e5"/>  <!-- gajo 6 (crema) -->
+          <path d="M310 70 L348 258 L386 258Z" fill="#d9434d"/>  <!-- gajo 7 (rojo) -->
+          <path d="M310 70 L386 258 L424 258Z" fill="#fff6e5"/>  <!-- gajo 8 (crema) -->
+          <path d="M310 70 L424 258 L462 258Z" fill="#d9434d"/>  <!-- gajo 9 (rojo) -->
+          <path d="M310 70 L462 258 L500 258Z" fill="#fff6e5"/>  <!-- gajo 10 (crema) -->
+        </g>
+        <!-- Sombreado del techo -->
+        <path d="M120 258 Q240 205 310 70 Q380 205 500 258Z" fill="url(#roofShade)"/>
+        <!-- Contorno del techo -->
+        <path d="M120 258 Q240 205 310 70 Q380 205 500 258Z" fill="none" stroke="#a92535" stroke-width="5" stroke-linejoin="round"/>
+        <!-- Borde inferior del techo -->
+        <path d="M117 258 H503" stroke="#a92535" stroke-width="7" stroke-linecap="round"/>
+
+        <!-- ===== FLEQUILLO FESTONEADO: 10 semicírculos alternando amarillo y azul ===== -->
+        <g stroke="#a92535" stroke-width="3.5" stroke-linejoin="round">
+          <path d="M120 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#ffd45c"/>
+          <path d="M158 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#62b5d7"/>
+          <path d="M196 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#ffd45c"/>
+          <path d="M234 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#62b5d7"/>
+          <path d="M272 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#ffd45c"/>
+          <path d="M310 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#62b5d7"/>
+          <path d="M348 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#ffd45c"/>
+          <path d="M386 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#62b5d7"/>
+          <path d="M424 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#ffd45c"/>
+          <path d="M462 258 h38 v8 a19 11 0 0 1 -38 0Z" fill="#62b5d7"/>
+        </g>
+
+        <!-- ===== MEDALLÓN CON EL NÚMERO 1 (primer añito) ===== -->
+        <circle cx="310" cy="176" r="24" fill="#ffd45c" stroke="#a92535" stroke-width="4"/>  <!-- disco dorado -->
+        <circle cx="310" cy="176" r="18" fill="none" stroke="#fff6e5" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"/>  <!-- borde punteado -->
+        <text x="310" y="187" text-anchor="middle" font-family="'Lilita One',cursive" font-size="31" fill="#d9434d" stroke="#a92535" stroke-width=".6">1</text>
+
+        <!-- ===== ASTA Y BANDERÍN ===== -->
+        <path d="M310 72 V24" stroke="#f2bd43" stroke-width="5" stroke-linecap="round"/>  <!-- asta -->
+        <circle cx="310" cy="72" r="7" fill="#ffd45c" stroke="#a92535" stroke-width="3"/>  <!-- bola en la punta del techo -->
+        <circle cx="310" cy="21" r="6" fill="#ffd45c" stroke="#a92535" stroke-width="3"/>  <!-- bola en la punta del asta -->
+        <g class="pennant">  <!-- clase "pennant": ondea con la animación "wave" del CSS -->
+          <path d="M314 30 L376 45 L314 61Z" fill="#f29ab0" stroke="#a92535" stroke-width="3.5" stroke-linejoin="round"/>
+        </g>
+
+        <!-- ===== LUNA DORMIDA (guiño al nombre «Lua») ===== -->
+        <path d="M504.96 56.29 A42 42 0 1 0 534.68 121.69 A36 36 0 0 1 504.96 56.29Z" fill="#ffe08a" stroke="#e2a93a" stroke-width="3.5" stroke-linejoin="round"/>  <!-- media luna -->
+        <g fill="none" stroke="#a92535" stroke-width="2.4" stroke-linecap="round">
+          <path d="M469 104 q5 5 10 0"/>  <!-- ojo cerrado -->
+          <path d="M473 114.5 q3.5 3.5 7 0"/>  <!-- sonrisa -->
+        </g>
+        <circle cx="467" cy="112" r="3.6" fill="#f29ab0" opacity=".75"/>  <!-- mejilla sonrosada -->
+
+        <!-- ===== GLOBOS: dos ramos que se mecen suavemente (animación "sway" del CSS) ===== -->
+        <!-- Ramo izquierdo (3 globos) -->
+        <g class="cluster left">
+          <!-- Hilos: salen de cada globo y se juntan en un mismo punto del suelo -->
+          <g fill="none" stroke="#8aa5b5" stroke-width="1.7" stroke-linecap="round">
+            <path d="M54 178 Q63.0 270.0 92 362"/>
+            <path d="M98 148 Q103.0 255.0 92 362"/>
+            <path d="M80 214 Q80.0 288.0 92 362"/>
+          </g>
+          <!-- Punto donde se amarran los hilos -->
+          <circle cx="92" cy="362" r="4" fill="#a92535"/>
+          <!-- Globo azul -->
+          <ellipse cx="54" cy="142" rx="22" ry="28" fill="#62b5d7"/>  <!-- cuerpo -->
+          <path d="M54 169 l-5 9 h10Z" fill="#62b5d7"/>  <!-- nudo -->
+          <ellipse cx="45.6" cy="130.2" rx="4.4" ry="7.8" fill="#fff" opacity=".5" transform="rotate(-25 45.6 130.2)"/>  <!-- brillo -->
+          <!-- Globo amarillo -->
+          <ellipse cx="98" cy="112" rx="22" ry="28" fill="#ffd45c"/>  <!-- cuerpo -->
+          <path d="M98 139 l-5 9 h10Z" fill="#ffd45c"/>  <!-- nudo -->
+          <ellipse cx="89.6" cy="100.2" rx="4.4" ry="7.8" fill="#fff" opacity=".5" transform="rotate(-25 89.6 100.2)"/>  <!-- brillo -->
+          <!-- Globo rojo -->
+          <ellipse cx="80" cy="178" rx="21" ry="27" fill="#d9434d"/>  <!-- cuerpo -->
+          <path d="M80 204 l-5 9 h10Z" fill="#d9434d"/>  <!-- nudo -->
+          <ellipse cx="72.0" cy="166.7" rx="4.2" ry="7.6" fill="#fff" opacity=".5" transform="rotate(-25 72.0 166.7)"/>  <!-- brillo -->
+        </g>
+        <!-- Ramo derecho (2 globos) -->
+        <g class="cluster right">
+          <!-- Hilos: salen de cada globo y se juntan en un mismo punto del suelo -->
+          <g fill="none" stroke="#8aa5b5" stroke-width="1.7" stroke-linecap="round">
+            <path d="M548 241 Q551.5 301.5 535 362"/>
+            <path d="M584 212 Q551.5 287.0 535 362"/>
+          </g>
+          <!-- Punto donde se amarran los hilos -->
+          <circle cx="535" cy="362" r="4" fill="#a92535"/>
+          <!-- Globo verde -->
+          <ellipse cx="548" cy="205" rx="22" ry="28" fill="#7ab889"/>  <!-- cuerpo -->
+          <path d="M548 232 l-5 9 h10Z" fill="#7ab889"/>  <!-- nudo -->
+          <ellipse cx="539.6" cy="193.2" rx="4.4" ry="7.8" fill="#fff" opacity=".5" transform="rotate(-25 539.6 193.2)"/>  <!-- brillo -->
+          <!-- Globo rosa -->
+          <ellipse cx="584" cy="176" rx="22" ry="28" fill="#f29ab0"/>  <!-- cuerpo -->
+          <path d="M584 203 l-5 9 h10Z" fill="#f29ab0"/>  <!-- nudo -->
+          <ellipse cx="575.6" cy="164.2" rx="4.4" ry="7.8" fill="#fff" opacity=".5" transform="rotate(-25 575.6 164.2)"/>  <!-- brillo -->
+        </g>
+
+        <!-- ===== ESTRELLITAS: parpadean suavemente (animación "twinkle" del CSS) ===== -->
+        <!-- Estrella amarilla (arriba, izquierda) -->
+        <g transform="translate(205 50) scale(1.0)">
+          <use class="tw" href="#spark" fill="#ffd45c" style="animation-delay:0s"/>
+        </g>
+        <!-- Estrella azul (junto al techo, derecha) -->
+        <g transform="translate(430 160) scale(0.8)">
+          <use class="tw" href="#spark" fill="#62b5d7" style="animation-delay:1.2s"/>
+        </g>
+        <!-- Estrella amarilla (arriba, derecha) -->
+        <g transform="translate(580 62) scale(0.75)">
+          <use class="tw" href="#spark" fill="#ffd45c" style="animation-delay:0.6s"/>
+        </g>
+        <!-- Estrella azul (arriba, izquierda) -->
+        <g transform="translate(30 62) scale(0.7)">
+          <use class="tw" href="#spark" fill="#62b5d7" style="animation-delay:1.8s"/>
+        </g>
+        <!-- Estrella rosa (junto al techo, izquierda) -->
+        <g transform="translate(165 160) scale(0.8)">
+          <use class="tw" href="#spark" fill="#f29ab0" style="animation-delay:2.4s"/>
+        </g>
+        <!-- Estrella amarilla (abajo, derecha) -->
+        <g transform="translate(600 262) scale(0.8)">
+          <use class="tw" href="#spark" fill="#ffd45c" style="animation-delay:0.9s"/>
+        </g>
+        <!-- Estrella amarilla (abajo, izquierda) -->
+        <g transform="translate(24 260) scale(0.75)">
+          <use class="tw" href="#spark" fill="#ffd45c" style="animation-delay:1.5s"/>
+        </g>
+
+        <!-- ===== CONFETI EN EL SUELO ===== -->
+        <g stroke="#a92535" stroke-width="2.5" fill="#fff">
+          <circle cx="196" cy="386" r="8"/>
+          <circle cx="226" cy="402" r="6"/>
+          <circle cx="420" cy="388" r="8"/>
+          <circle cx="452" cy="402" r="5.5"/>
+        </g>
+
+      </svg>
+
+      <!-- Botón que baja a la sección "invitacion"; el JavaScript también inicia la música al tocarlo (id="enterBtn") -->
+      <a class="btn" id="enterBtn" href="#invitacion">🎟️ Entrar al circo</a>
+
+      <!-- Texto de ayuda para el visitante -->
+      <div class="hint">Desliza hacia abajo y descubre la sorpresa ↓</div>
+
+      <!-- Estrellitas decorativas flotantes (se posicionan y animan desde el CSS) -->
+      <span class="sparkle s1">✦</span>
+      <span class="sparkle s2">★</span>
+      <span class="sparkle s3">✧</span>
+      <span class="sparkle s4">✦</span>
+
+    </section>
+
+    <!-- Cinta decorativa de separación -->
+    <div class="ribbon"></div>
+
+
+    <!-- ==========================================================
+         2. INTRODUCCIÓN
+         Mensaje de bienvenida, tarjeta del "1" y datos de fecha y hora.
+         ========================================================== -->
+    <section class="intro" id="invitacion">
+
+      <div class="kicker">¡Una función muy especial!</div>
+      <h2>La magia cumple un año</h2>
+      <p>Un día lleno de alegría, juegos y muchas sorpresas está por llegar. Nos encantará compartir contigo esta celebración tan especial.</p>
+
+      <!-- Tarjeta con el número 1 y el nombre de la cumpleañera -->
+      <div class="intro-card">
+        <div class="big-one">1</div>
+        <div class="kicker">¡Mi primer añito!</div>
+        <h3 style="font-family:'Lilita One';font-size:2rem;color:#d9434d;margin:8px 0">Lua</h3>
+        <p style="margin:0">Tiene el honor de invitarte a su gran función de cumpleaños.</p>
+      </div>
+
+      <!-- Datos del evento en dos cuadritos: día y hora -->
+      <div class="info-grid">
+        <div class="info">
+          <div class="emoji">🗓️</div>
+          <b>Domingo</b>
+          20 de diciembre
+        </div>
+
+        <div class="info">
+          <div class="emoji">⏰</div>
+          <b>La función inicia</b>
+          5:00 p. m.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Cinta decorativa de separación -->
+    <div class="ribbon"></div>
+
+
+    <!-- ==========================================================
+         3. PROGRAMA
+         Lista de las actividades de la fiesta.
+         ========================================================== -->
+    <section class="program">
+
+      <div class="stars">★ ✦ ★</div>
+      <div class="kicker">Prepárate para disfrutar</div>
+      <h2>¡Que comience el espectáculo!</h2>
+      <p>Habrá momentos mágicos para compartir en familia.</p>
+
+      <div class="program-list">
+
+        <div class="program-item">
+          <span>🥁</span>
+          <div>
+            <b>El gran espectáculo</b><br>
+            <small>Show especial para toda la familia.</small>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <span>🎠</span>
+          <div>
+            <b>La feria de la diversión</b><br>
+            <small>Juegos, retos y premios sorpresa.</small>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <span>🎨</span>
+          <div>
+            <b>Estación de artistas</b><br>
+            <small>Pinta caritas y tatuajes.</small>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <span>🍔</span>
+          <div>
+            <b>El rincón de antojos</b><br>
+            <small>Hot dogs, elotes y palomitas.</small>
+          </div>
+        </div>
+
+        <div class="program-item">
+          <span>🎂</span>
+          <div>
+            <b>¡Pastel y cumpleaños feliz!</b><br>
+            <small>Un momento para celebrar a Lua</small>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================================
+         4. CUENTA REGRESIVA
+         Los números se calculan y actualizan con JavaScript (ver la función updateCountdown).
+         Los "--" son lo que se ve un instante antes de que el script los reemplace.
+         ========================================================== -->
+    <section class="countdown">
+
+      <div class="kicker">La cuenta regresiva ha comenzado</div>
+      <h2>Falta muy poco</h2>
+
+      <!-- Aquí el JavaScript dibuja los cuadritos de Días, Horas, Minutos y Segundos -->
+      <div class="countdown-box" id="countdown">
+        <div class="time"><strong>--</strong><small>Días</small></div>
+        <div class="time"><strong>--</strong><small>Horas</small></div>
+        <div class="time"><strong>--</strong><small>Minutos</small></div>
+        <div class="time"><strong>--</strong><small>Segundos</small></div>
+      </div>
+
+      <!-- Mensaje que el JavaScript cambia cuando llega el día del evento -->
+      <p id="countdown-message" class="small">¡Nos vemos bajo la gran carpa!</p>
+
+    </section>
+
+    <!-- Cinta decorativa de separación -->
+    <div class="ribbon"></div>
+
+
+    <!-- ==========================================================
+         5. UBICACIÓN
+         Botón que abre el lugar de la fiesta en Google Maps.
+         ========================================================== -->
+    <section class="location">
+
+      <div class="kicker">¿Dónde será la función?</div>
+      <h2>¡Te esperamos!</h2>
+      <p>Prepara tu mejor sonrisa y acompáñanos a celebrar.</p>
+
+      <div class="map-card">
+
+        <!-- "Mapa" decorativo hecho con CSS y emojis -->
+        <div class="map-illustration">📍🎪🎈</div>
+
+        <p style="margin:16px 0 5px"><b>La gran carpa de Lua</b></p>
+        <p class="small">Consulta la ubicación exacta en el mapa.</p>
+
+        <!-- Botón verde. target="_blank" lo abre en otra pestaña; rel="noopener" es una medida de seguridad.
+             Para cambiar el lugar, reemplaza el enlace de href por el de Google Maps que quieras. -->
+        <a class="btn green" style="background:#6da77b;box-shadow:0 5px 0 #477b53" href="https://maps.app.goo.gl/nkaynzvFpHkTcrEm7?g_st=ac" target="_blank" rel="noopener">📍 Abrir ubicación en Google Maps</a>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================================
+         6. GALERÍA
+         Carrusel deslizable con las fotos de la carpeta "imagenes". Para cambiarlas, reemplaza el archivo o el nombre en src.
+         ========================================================== -->
+    <section class="gallery">
+
+      <div class="kicker">Nuestra pequeña estrella</div>
+      <h2>Momentos de Lua</h2>
+      <p>Un espacio para guardar recuerdos de esta aventura.</p>
+
+      <!-- CARRUSEL DE FOTOS
+           - Cada <div class="photo"> es una foto. Para agregar una, copia un bloque completo y cambia src y la leyenda.
+             Los puntitos y los contadores se ajustan solos (no hay que tocar el JavaScript).
+           - loading="lazy" hace que las fotos 2, 3 y 4 se descarguen solo cuando se acercan (la portada carga más rápido). -->
+      <div class="carousel" id="photoCarousel" role="region" aria-roledescription="carrusel" aria-label="Fotos de Lua">
+
+        <!-- Pista deslizable. tabindex="0" permite enfocarla y usar las flechas del teclado -->
+        <div class="carousel-track" tabindex="0">
+
+          <div class="photo">
+            <img src="imagenes/globos.jpeg" alt="Fotografia de Lua" decoding="async">
+            <small>Un recuerdo especial</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/frutas.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Días maravillosos</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/cenicienta1.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/adams.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/azul.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/bata.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/blancanieves.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/box.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/calabaza.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/chilindrina.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/cine.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/corazon.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/gohan.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/it.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/limones.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/momia.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/mono.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/navdad.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/nenuco.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/poo.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+          <div class="photo">
+            <img src="imagenes/winny.jpeg" alt="Fotografia de Lua" loading="lazy" decoding="async">
+            <small>Un año de alegría</small>
+          </div>
+
+        </div>
+
+        <!-- Controles: flecha anterior, puntitos (los crea el JavaScript) y flecha siguiente -->
+        <div class="carousel-controls">
+
+          <button class="carousel-btn" id="carouselPrev" type="button" aria-label="Foto anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+          <div class="carousel-dots" id="carouselDots"></div>
+
+          <button class="carousel-btn" id="carouselNext" type="button" aria-label="Foto siguiente">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Nota opcional que está desactivada (comentada); se puede reactivar quitando los signos de comentario -->
+      <!--<p class="small">Estas ilustraciones son espacios provisionales. Después podremos colocar tus fotografías favoritas.</p>-->
+
+    </section>
+
+    <!-- Cinta decorativa de separación -->
+    <div class="ribbon"></div>
+
+
+    <!-- ==========================================================
+         7. CONFIRMACIÓN DE ASISTENCIA (RSVP)
+         Al tocar el botón, la función sendRSVP() abre WhatsApp con el mensaje ya escrito.
+         ========================================================== -->
+    <section class="rsvp">
+
+      <div class="kicker">¡Aparta tu lugar!</div>
+      <h2>¿Nos acompañas?</h2>
+      <p>Confirma tu asistencia para que preparemos todo para recibirte.</p>
+
+      <div class="rsvp-card">
+
+        <!-- Campo: nombre de quien confirma -->
+        <label for="guest">Nombre de quien confirma</label>
+        <input id="guest" placeholder="Escribe tu nombre" autocomplete="name">
+
+        <!-- Campo: número de asistentes -->
+        <label for="people">¿Cuántas personas asistirán?</label>
+        <select id="people">
+          <option value="1">1 persona</option>
+          <option value="2">2 personas</option>
+          <option value="3">3 personas</option>
+          <option value="4">4 personas</option>
+          <option value="5">5 personas</option>
+          <option value="6">6 o más personas</option>
+        </select>
+
+        <!-- Botón que ejecuta sendRSVP() al hacer clic -->
+        <button class="btn" onclick="sendRSVP()">💌 Confirmar por WhatsApp</button>
+
+        <p class="small" style="margin:13px 0 0;text-align:center">La confirmación abrirá una conversación de WhatsApp.</p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================================
+         8. PIE DE PÁGINA
+         ========================================================== -->
+    <footer class="footer">
+      <div style="font-size:2rem">🎪 ✨ 🎈</div>
+      <h2>¡Te esperamos!</h2>
+      <p>Gracias por ser parte del primer año de Lua.</p>
+      <div style="font-size:.85rem;opacity:.9">Con cariño, la familia de Lua ♥</div>
+    </footer>
+
+  </main>
+
+
+  <!-- Botón flotante de música (fijo en la esquina). Su texto y color los cambia el JavaScript. -->
+  <button class="music" id="musicButton" aria-label="Activar música">♫ Activar música</button>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+       Cuatro partes: 1) cuenta regresiva  2) confirmación por WhatsApp  3) música de fondo  4) carrusel de fotos
+       ============================================================ -->
+  <script>
+
+    /* ==========================================================
+       1. CUENTA REGRESIVA
+       ========================================================== */
+
+    // Fecha y hora del evento: 20 de diciembre de 2026 a las 5:00 p. m. (17:00), hora local del dispositivo.
+    // Ojo: en JavaScript los meses empiezan en 0, por eso diciembre es 11.
+    // Para cambiar la fecha: new Date(año, mes - 1, día, hora, minutos, segundos)
+    const eventDate = new Date(2026, 11, 20, 17, 0, 0);
+
+    // Calcula cuánto falta para el evento y dibuja los cuadritos de Días, Horas, Minutos y Segundos.
+    // Se ejecuta una vez al cargar la página y luego cada segundo (ver setInterval más abajo).
+    function updateCountdown() {
+      const now = new Date(),
+            diff = eventDate - now;                       // milisegundos que faltan
+      const el = document.getElementById('countdown');    // contenedor donde se dibujan los cuadritos
+
+      // Si la fecha ya llegó (diferencia 0 o negativa), muestra un mensaje de fiesta y termina aquí.
+      if (diff <= 0) {
+        el.innerHTML = '<div class="time" style="min-width:230px"><strong>¡Hoy es el gran día!</strong><small>¡Que comience la fiesta!</small></div>';
+        document.getElementById('countdown-message').textContent = '¡Feliz cumpleaños, Lua!';
+        return;
+      }
+
+      // Convierte los milisegundos restantes a días, horas, minutos y segundos.
+      // El operador % (residuo) evita que, por ejemplo, las horas pasen de 23.
+      const vals = [
+        Math.floor(diff / 86400000),            // días     (1 día    = 86 400 000 ms)
+        Math.floor(diff / 3600000) % 24,        // horas    (1 hora   =  3 600 000 ms)
+        Math.floor(diff / 60000) % 60,          // minutos  (1 minuto =     60 000 ms)
+        Math.floor(diff / 1000) % 60            // segundos (1 seg    =      1 000 ms)
+      ];
+      const labels = ['Días', 'Horas', 'Minutos', 'Segundos'];
+
+      // Crea un cuadrito por cada valor; padStart(2,'0') agrega un cero a la izquierda (5 → 05).
+      el.innerHTML = vals.map((v, i) =>
+        `<div class="time"><strong>${String(v).padStart(2,'0')}</strong><small>${labels[i]}</small></div>`
+      ).join('');
+    }
+
+    // Dibuja la cuenta regresiva de inmediato y la vuelve a actualizar cada 1000 ms (1 segundo).
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+
+    /* ==========================================================
+       2. CONFIRMACIÓN DE ASISTENCIA POR WHATSAPP
+       ========================================================== */
+
+    // CAMBIA ESTE NÚMERO por el WhatsApp de quien recibirá las confirmaciones.
+    // Formato internacional sin +, espacios ni guiones. Ejemplo México: 5215512345678.
+    const WHATSAPP_NUMBER = "5538005305";
+
+    // Se ejecuta al tocar "Confirmar por WhatsApp": valida los datos y abre WhatsApp con el mensaje listo.
+    function sendRSVP() {
+      const name = document.getElementById('guest').value.trim();    // nombre escrito (sin espacios sobrantes)
+      const people = document.getElementById('people').value;        // cantidad elegida en la lista
+
+      // 1) El nombre es obligatorio: si está vacío, avisa y no continúa.
+      if (!name) {
+        alert('Por favor, escribe tu nombre para confirmar.');
+        return;
+      }
+
+      // 2) Protección: avisa si el número sigue siendo el de ejemplo ("5700000000") y no continúa.
+      if (WHATSAPP_NUMBER === "5700000000") {
+        alert('Antes de publicar, agrega el número de WhatsApp de quien recibirá las confirmaciones en el archivo index.html.');
+        return;
+      }
+
+      // 3) Arma el mensaje. %0A es un salto de línea dentro de un enlace;
+      //    encodeURIComponent protege acentos y espacios del nombre.
+      const msg = `¡Hola! Confirmo mi asistencia al primer cumpleaños de Lua 🎪%0A%0ANombre: ${encodeURIComponent(name)}%0APersonas: ${people}%0AFecha: 20 de diciembre de 2026, 5:00 p. m.`;
+
+      // 4) Abre WhatsApp en otra pestaña con el mensaje ya escrito.
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank', 'noopener');
+    }
+
+
+    /* ==========================================================
+       3. MÚSICA DE FONDO
+       ----------------------------------------------------------
+       OPCIÓN A · TU CANCIÓN: guarda un archivo MP3 dentro de la carpeta "musica"
+         y escribe su nombre en MUSIC_FILE (por defecto: musica/cancion.mp3).
+       OPCIÓN B · SIN ARCHIVO: si el MP3 no existe, suena una melodía de caja de música
+         creada por el navegador, así la invitación nunca se queda en silencio.
+       ========================================================== */
+
+    // ---- Ajustes (lo único que normalmente se modifica) ----
+    const MUSIC_FILE = "musica/cancion.mp3";   // ruta de tu canción
+    const MUSIC_VOLUME = 0.55;                 // 0 = silencio · 1 = volumen máximo (no aplica en iPhone)
+
+    // ---- Elementos y estado ----
+    const musicButton = document.getElementById('musicButton');   // botón flotante de la esquina
+
+    let playing = false,             // ¿la música está sonando?
+        userToggled = false,         // ¿el visitante ya usó el botón de música por su cuenta?
+        songFailed = !MUSIC_FILE,    // ¿falló la carga del MP3? (si es así se usa la melodía de respaldo)
+        fadeTimer = null;            // temporizador del efecto de subir/bajar volumen
+
+    // Reproductor de la canción (el MP3)
+    const song = new Audio();
+    song.loop = true;                // se repite sin parar
+    song.preload = 'none';           // no descarga la canción hasta que se necesite (ahorra datos)
+    if (MUSIC_FILE) song.src = MUSIC_FILE;
+
+    // Si el archivo no existe o no se puede reproducir, se marca como fallido y entra la melodía de respaldo.
+    song.addEventListener('error', () => {
+      songFailed = true;
+      if (playing) startSynth();
+    });
+
+    // Actualiza el aspecto del botón flotante según la música esté sonando o no.
+    function setButton(on) {
+      musicButton.textContent = on ? '♫ Pausar música' : '♫ Activar música';
+      musicButton.classList.toggle('playing', on);                 // verde cuando suena
+      musicButton.setAttribute('aria-pressed', String(on));        // accesibilidad: estado del botón
+      musicButton.setAttribute('aria-label', on ? 'Pausar música' : 'Activar música');
+    }
+
+    // Sube o baja el volumen de la canción poco a poco (entrada y salida suaves).
+    //   to   = volumen final (0 a 1)
+    //   done = función opcional que se ejecuta al terminar
+    function fadeSong(to, done) {
+      clearInterval(fadeTimer);
+
+      const from = song.volume,    // volumen actual
+            steps = 15;            // número de pasos del efecto
+      let i = 0;
+
+      fadeTimer = setInterval(() => {
+        i++;
+        song.volume = Math.min(1, Math.max(0, from + (to - from) * i / steps));   // mantiene el volumen entre 0 y 1
+
+        if (i >= steps) {
+          clearInterval(fadeTimer);
+          if (done) done();
+        }
+      }, 50);                      // un paso cada 50 ms
+    }
+
+
+    /* ---------- Melodía de respaldo: vals de caja de música (original) ----------
+       Se genera con Web Audio, sin archivos externos.
+       Compás de 3/4 en corcheas: 6 "pasos" por compás (un paso cada STEP segundos). */
+
+    const STEP = 0.23;                                       // segundos por corchea (≈130 pulsos por minuto)
+    const midi = m => 440 * Math.pow(2, (m - 69) / 12);      // convierte un número de nota MIDI a frecuencia (Hz)
+
+    // Partitura: 16 compases. Cada nota = [nota MIDI, duración en corcheas]; null = silencio.
+    // (60 = Do central; 67 = Sol; 72 = Do agudo; cada +1 sube un semitono)
+    const SCORE = [
+      // Frase 1
+      [[67, 2], [72, 2], [76, 2]],      // compás 1  · acorde Do
+      [[79, 3], [76, 3]],               // compás 2  · acorde Do
+      [[77, 2], [72, 2], [69, 2]],      // compás 3  · acorde Fa
+      [[72, 3], [67, 3]],               // compás 4  · acorde Do
+
+      // Frase 2
+      [[64, 2], [67, 2], [72, 2]],      // compás 5  · acorde Do
+      [[76, 2], [72, 2], [69, 2]],      // compás 6  · acorde La menor
+      [[71, 2], [74, 2], [79, 2]],      // compás 7  · acorde Sol
+      [[77, 3], [74, 3]],               // compás 8  · acorde Sol
+
+      // Frase 3
+      [[76, 2], [72, 2], [76, 2]],      // compás 9  · acorde Do
+      [[79, 4], [76, 2]],               // compás 10 · acorde Do
+      [[77, 2], [81, 2], [77, 2]],      // compás 11 · acorde Fa
+      [[76, 3], [72, 3]],               // compás 12 · acorde Do
+
+      // Frase 4 (final)
+      [[74, 2], [71, 2], [67, 2]],      // compás 13 · acorde Sol
+      [[71, 2], [74, 2], [77, 2]],      // compás 14 · acorde Sol
+      [[76, 2], [72, 2], [67, 2]],      // compás 15 · acorde Do
+      [[72, 5], [null, 1]]              // compás 16 · acorde Do (nota larga y silencio final)
+    ];
+
+    // Acorde de cada compás (en el mismo orden que SCORE)
+    const PROGRESSION = ['C', 'C', 'F', 'C', 'C', 'Am', 'G', 'G', 'C', 'C', 'F', 'C', 'G', 'G', 'C', 'C'];
+
+    // Notas de cada acorde: "bass" = nota grave (el "oom"), "pah" = notas del acompañamiento (los "pah-pah")
+    const CHORDS = {
+      C:  { bass: 48, pah: [60, 64, 67] },     // Do mayor
+      F:  { bass: 53, pah: [60, 65, 69] },     // Fa mayor
+      G:  { bass: 55, pah: [59, 62, 67] },     // Sol mayor
+      Am: { bass: 57, pah: [60, 64, 69] }      // La menor
+    };
+
+    // Convierte SCORE en una lista indexada por "paso": melodyAt[paso] = { m: nota, d: duración }
+    const melodyAt = [];
+    SCORE.forEach((bar, b) => {
+      let pos = b * 6;                                         // primer paso de este compás
+      bar.forEach(([m, d]) => {
+        if (m !== null) melodyAt[pos] = { m, d };
+        pos += d;                                              // avanza según la duración de la nota
+      });
+    });
+
+    const TOTAL_STEPS = SCORE.length * 6;                      // pasos totales antes de repetir la melodía
+
+    // Variables del sintetizador
+    let audioCtx = null,       // motor de audio del navegador
+        master = null,         // control de volumen general de la melodía
+        synthTimer = null,     // temporizador que programa las notas
+        nextTime = 0,          // momento (en segundos) en que sonará el siguiente paso
+        stepIndex = 0;         // paso actual de la melodía
+
+    // Prepara y "despierta" el motor de audio. Debe llamarse dentro de un toque del usuario (exigencia de iPhone/Safari).
+    function unlockAudio() {
+      const AC = window.AudioContext || window.webkitAudioContext;   // compatibilidad con Safari antiguo
+      if (!AC) return;
+
+      if (!audioCtx) {
+        audioCtx = new AC();
+        master = audioCtx.createGain();       // perilla de volumen general
+        master.gain.value = 0;                // empieza en silencio para poder subir suavemente
+        master.connect(audioCtx.destination); // conecta a las bocinas
+      }
+
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    // Toca una nota:
+    //   type = forma de onda · freq = frecuencia (Hz) · t = cuándo empieza · dur = duración · vol = volumen
+    function tone(type, freq, t, dur, vol) {
+      const o = audioCtx.createOscillator(),    // genera el sonido
+            g = audioCtx.createGain();          // controla su volumen en el tiempo
+
+      o.type = type;
+      o.frequency.setValueAtTime(freq, t);
+
+      g.gain.setValueAtTime(.0001, t);                       // empieza casi en silencio
+      g.gain.exponentialRampToValueAtTime(vol, t + .012);    // sube rápido (ataque)
+      g.gain.exponentialRampToValueAtTime(.0001, t + dur);   // se apaga poco a poco (como una campanita)
+
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + dur + .05);
+    }
+
+    // Toca todo lo que corresponde a un paso: melodía, bajo y acompañamiento.
+    function playStep(step, t) {
+      const pos = step % 6,                                    // posición dentro del compás (0 a 5)
+            chord = CHORDS[PROGRESSION[Math.floor(step / 6)]], // acorde del compás actual
+            n = melodyAt[step];                                // nota de la melodía que empieza aquí (si hay)
+
+      // Melodía: una nota principal (triangular) más su octava arriba (senoidal) = timbre de campanita
+      if (n) {
+        const d = n.d * STEP * 1.15;
+        tone('triangle', midi(n.m), t, d, .10);
+        tone('sine', midi(n.m + 12), t, d * .6, .035);
+      }
+
+      // "Oom": nota grave en el primer tiempo del compás
+      if (pos === 0) tone('sine', midi(chord.bass), t, STEP * 2.2, .12);
+
+      // "Pah-pah": el acorde suave en el segundo y tercer tiempo
+      if (pos === 2 || pos === 4) chord.pah.forEach(m => tone('triangle', midi(m), t, STEP * 1.1, .028));
+    }
+
+    // Programa las notas con un poco de anticipación (.25 s) para que el ritmo sea estable.
+    function scheduler() {
+      while (nextTime < audioCtx.currentTime + .25) {
+        playStep(stepIndex, nextTime);
+        nextTime += STEP;
+        stepIndex = (stepIndex + 1) % TOTAL_STEPS;     // al terminar la melodía vuelve al inicio
+      }
+    }
+
+    // Inicia la melodía de respaldo con entrada suave de volumen.
+    function startSynth() {
+      if (synthTimer) return;      // si ya está sonando, no hace nada
+      unlockAudio();
+      if (!audioCtx) return;
+
+      const t = audioCtx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(.9, t + 1);   // sube el volumen durante 1 segundo
+
+      nextTime = t + .1;
+      synthTimer = setInterval(scheduler, 40);          // revisa cada 40 ms si hay notas por programar
+    }
+
+    // Detiene la melodía de respaldo con salida suave de volumen.
+    function stopSynth() {
+      clearInterval(synthTimer);
+      synthTimer = null;
+      if (!audioCtx) return;
+
+      const t = audioCtx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(0, t + .4);   // baja el volumen en 0.4 segundos
+    }
+
+
+    /* ---------- Controles: iniciar y pausar la música ---------- */
+
+    // Inicia la música: primero intenta con el MP3; si falla, usa la melodía de respaldo.
+    async function startMusic() {
+      if (playing) return;
+      playing = true;
+      setButton(true);
+      unlockAudio();                                  // debe ocurrir dentro del toque (iPhone)
+
+      if (!songFailed) {
+        try {
+          song.volume = 0;                            // empieza en silencio para subir suavemente
+          await song.play();                          // espera a que el navegador empiece a reproducir
+          if (!playing) {                             // si lo pausaron mientras cargaba, se detiene
+            song.pause();
+            return;
+          }
+          fadeSong(MUSIC_VOLUME);                     // sube suavemente hasta el volumen configurado
+          return;
+        } catch (e) {
+          songFailed = true;                          // no hay MP3: usamos la melodía de respaldo
+        }
+      }
+
+      if (playing) startSynth();
+    }
+
+    // Pausa la música (la canción y/o la melodía de respaldo) con salida suave.
+    function stopMusic() {
+      playing = false;
+      setButton(false);
+      stopSynth();
+
+      if (!songFailed) fadeSong(0, () => {
+        if (!playing) song.pause();
+      });
+    }
+
+    // Botón flotante: alterna entre iniciar y pausar. Marca que el visitante decidió por su cuenta.
+    musicButton.addEventListener('click', () => {
+      userToggled = true;
+      playing ? stopMusic() : startMusic();
+    });
+
+    // La música arranca sola al tocar "Entrar al circo" (a menos que el visitante ya decidiera él).
+    // Para quitar este comportamiento, borra las 3 líneas siguientes.
+    document.getElementById('enterBtn').addEventListener('click', () => {
+      if (!userToggled) startMusic();
+    });
+
+    /* ==========================================================
+       4. CARRUSEL DE FOTOS
+       El deslizamiento y el "imán" los hace el CSS (scroll-snap).
+       Este código agrega: flechas, puntitos y la marca de "foto activa".
+       Va dentro de una función para que sus variables no choquen con las demás.
+       ========================================================== */
+    (function initPhotoCarousel() {
+      const carousel = document.getElementById('photoCarousel');
+      if (!carousel) return;                                      // si la galería no existe, no hace nada
+
+      const track = carousel.querySelector('.carousel-track');    // fila que se desliza
+      const slides = Array.from(track.children);                  // cada foto (.photo)
+      const prevBtn = document.getElementById('carouselPrev');    // flecha izquierda
+      const nextBtn = document.getElementById('carouselNext');    // flecha derecha
+      const dotsBox = document.getElementById('carouselDots');    // contenedor de los puntitos
+
+      // Si la persona pidió "reducir movimiento", los cambios de foto son instantáneos.
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      let current = 0;                                            // posición de la foto activa (0 = la primera)
+
+      // Desplaza la pista para dejar la foto "index" centrada.
+      //   instant = true  → sin animación (se usa al cambiar el tamaño de la ventana)
+      function goTo(index, instant) {
+        const slide = slides[index];
+        track.scrollTo({
+          left: slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2,
+          behavior: (instant || reduceMotion.matches) ? 'auto' : 'smooth'
+        });
+      }
+
+      // Marca como activa la foto y el puntito de la posición "index".
+      function setActive(index) {
+        current = index;
+
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('is-active', i === index);
+        });
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === index);
+          dot.setAttribute('aria-current', String(i === index));  // accesibilidad
+        });
+      }
+
+      // Busca qué foto está más cerca del centro de la pista en este momento.
+      function nearestSlide() {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let best = 0,
+            bestDistance = Infinity;
+
+        slides.forEach((slide, i) => {
+          const distance = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            best = i;
+          }
+        });
+
+        return best;
+      }
+
+      // Crea un puntito por cada foto (y describe cada foto para lectores de pantalla).
+      const dots = slides.map((slide, i) => {
+        slide.setAttribute('role', 'group');
+        slide.setAttribute('aria-label', `Foto ${i + 1} de ${slides.length}`);
+
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot';
+        dot.setAttribute('aria-label', `Ir a la foto ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsBox.appendChild(dot);
+
+        return dot;
+      });
+
+      // Flechas: al llegar al final, "siguiente" vuelve a la primera foto (y al revés).
+      prevBtn.addEventListener('click', () => goTo((current - 1 + slides.length) % slides.length));
+      nextBtn.addEventListener('click', () => goTo((current + 1) % slides.length));
+
+      // Teclado: flechas ← → mueven el carrusel.
+      carousel.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          nextBtn.click();
+        }
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevBtn.click();
+        }
+      });
+
+      // Al deslizar (dedo, trackpad, flechas…), actualiza la foto activa.
+      // requestAnimationFrame limita el trabajo a una vez por cuadro para no gastar batería.
+      let ticking = false;
+      track.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          setActive(nearestSlide());
+          ticking = false;
+        });
+      }, { passive: true });
+
+      // Si cambia el tamaño de la ventana (o se gira el celular), vuelve a centrar la foto actual.
+      window.addEventListener('resize', () => goTo(current, true));
+
+      // Inicio: activa los estilos del carrusel y marca la primera foto.
+      carousel.classList.add('is-ready');
+      setActive(0);
+    })();
+
+  </script>
+</body>
+
+</html>

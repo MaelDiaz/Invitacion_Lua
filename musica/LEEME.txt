@@ -1,0 +1,11 @@
+CARPETA DE MÚSICA
+
+Para usar tu canción de fondo:
+1. Guarda aquí tu archivo y nómbralo exactamente:  cancion.mp3
+   (o usa otro nombre y cámbialo en index.html, en la línea:  const MUSIC_FILE = "musica/cancion.mp3";)
+2. Recomendado: que pese menos de 3 MB (un fragmento de 1 a 2 minutos, MP3 a 128 kbps).
+   La canción se repite en bucle, así que elige un corte que suene bien al reiniciar.
+3. El volumen se ajusta en index.html con:  const MUSIC_VOLUME = 0.55;
+
+Si esta carpeta no tiene cancion.mp3, la invitación reproduce automáticamente una
+melodía de caja de música original (vals de circo), para que nunca quede en silencio.
